@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AquaSentry — Executive Data Infographic (Final)</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg-deep: #081A2D;
+  --bg-panel: rgba(2, 10, 20, 0.85);
+  --accent-gold-light: #f0e0c0;
+  --accent-gold-dark: #c0a068;
+  --text-primary: #F0F8FF;
+  --text-secondary: #99AABB;
+  --shadow-color: rgba(255, 255, 255, 0.05);
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-deep);
+  background-image: radial-gradient(circle at top right, rgba(20, 40, 60, 0.5) 0%, transparent 50%),
+                    radial-gradient(circle at bottom left, rgba(20, 40, 60, 0.5) 0%, transparent 50%);
+  background-attachment: fixed;
+  background-size: cover;
+  font-family: 'Lato', sans-serif;
+  color: var(--text-primary);
+}
+
+/* --- Deck (maintains 7:4 ratio and scales automatically) --- */
+.deck {
+  aspect-ratio: 7 / 4;
+  width: 1400px;
+  height: 800px;
+  border-radius: 12px;
+  background: var(--bg-panel);
+  border: 1px solid var(--accent-gold-dark);
+  box-shadow: 0 10px 40px var(--shadow-color), inset 0 0 50px rgba(184, 134, 11, 0.05);
+  overflow: hidden;
+  position: relative;
+  padding: 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  transform-origin: center center;
+  transform: scale(1);
+  transition: transform 0.25s ease-in-out;
+}
+
+/* --- Text Styles --- */
+.gold-text {
+  background: linear-gradient(90deg, var(--accent-gold-light), var(--accent-gold-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+}
+
+.brand-small {
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 16px;
+}
+
+.progress {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.dot {
+  width: 16px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--text-secondary);
+  transition: all 0.5s;
+}
+.dot.active {
+  background: linear-gradient(90deg, var(--accent-gold-light), var(--accent-gold-dark));
+  box-shadow: 0 0 10px var(--accent-gold-light);
+  width: 30px;
+}
+
+/* Slides */
+.slide-area { flex: 1; position: relative; }
+.slide {
+  width: 100%;
+  height: 100%;
+  display: none;
+  flex-direction: row;
+  gap: 50px;
+  animation: slideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+.slide.active { display: flex; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Layout parts */
+.left { width: 60%; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+.right { width: 40%; display: flex; align-items: center; justify-content: center; }
+
+.title {
+  font-size: 52px;
+  font-weight: 900;
+  line-height: 1.2;
+  font-family: 'Playfair Display', serif;
+}
+
+.desc {
+  line-height: 1.7;
+  font-size: 17px;
+  color: var(--text-primary);
+}
+
+.badge {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 50px;
+  background: rgba(192, 160, 104, 0.1);
+  border: 1px solid var(--accent-gold-dark);
+  color: var(--accent-gold-light);
+  font-weight: 700;
+  font-size: 14px;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+}
+
+.feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 25px; }
+.feature {
+  padding: 18px;
+  border-radius: 6px;
+  background: rgba(192, 160, 104, 0.05);
+  border-left: 3px solid var(--accent-gold-dark);
+}
+.feature strong {
+  font-size: 16px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+  color: var(--accent-gold-light);
+}
+
+/* Image card */
+.card {
+  width: 100%;
+  height: 85%;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 18px;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+}
+.img-fit {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+  display: block;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 25px;
+  gap: 16px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 215, 0, 0.1);
+}
+.btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 215, 0, 0.1);
+  color: var(--text-primary);
+  padding: 14px 25px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 15px;
+  transition: 0.3s;
+}
+.btn.primary {
+  background: linear-gradient(90deg, var(--accent-gold-light), var(--accent-gold-dark));
+  color: var(--bg-deep);
+  border: none;
+  box-shadow: 0 5px 30px rgba(184, 134, 11, 0.5);
+}
+.btn:hover { transform: translateY(-1px); }
+
+/* --- Responsive (content only; scaling handled by JS) --- */
+@media (max-width: 900px) {
+  .right { display: none; }
+  .left { width: 100%; }
+  .title { font-size: 36px; }
+}
+</style>
+</head>
+
+<body>
+<div class="deck" id="deck">
+  <div class="header">
+    <div class="brand-small gold-text">AQUASENTRY // EXECUTIVE REPORT</div>
+    <div class="progress" id="dots"></div>
+  </div>
+
+  <div class="slide-area" id="slideArea">
+    <!-- === SLIDE 1 === -->
+    <section class="slide active" data-slide="1">
+      <div class="left">
+        <div class="badge">Viksit Bharat Abhiyan - Buildathon Initiative</div>
+        <div class="title gold-text">AquaSentry</div>
+        <div class="desc">
+          Smart, low-cost, local water quality sentinel designed to provide communities with real-time environmental insights.
+        </div>
+      </div>
+      <div class="right">
+        <div class="card">
+          <img class="img-fit" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- === SLIDE 2 === -->
+    <section class="slide" data-slide="2">
+      <div class="left">
+        <div class="badge">Core Objectives</div>
+        <div class="title gold-text">Real-Time Monitoring</div>
+        <div class="desc">AquaSentry provides accurate, continuous water quality monitoring accessible through a simple dashboard interface.</div>
+        <div class="feature-grid">
+          <div class="feature"><strong>pH & Turbidity</strong> Core chemical stability metrics.</div>
+          <div class="feature"><strong>Temperature & TDS</strong> Key environmental balance indicators.</div>
+          <div class="feature"><strong>IoT Integration</strong> Continuous, remote readings.</div>
+          <div class="feature"><strong>Alerts System</strong> Threshold-based SMS/email notifications.</div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="card">
+          <img class="img-fit" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- === SLIDE 3 === -->
+    <section class="slide" data-slide="3">
+      <div class="left">
+        <div class="badge">Innovation</div>
+        <div class="title gold-text">Low-Cost Scalability</div>
+        <div class="desc">Designed with locally available sensors and materials for easy manufacturing and deployment.</div>
+      </div>
+      <div class="right">
+        <div class="card">
+          <img class="img-fit" src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- === SLIDE 4 === -->
+    <section class="slide" data-slide="4">
+      <div class="left">
+        <div class="badge">Impact</div>
+        <div class="title gold-text">For Smarter Communities</div>
+        <div class="desc">Empowering rural and urban localities to identify contamination early and take sustainable action.</div>
+      </div>
+      <div class="right">
+        <div class="card">
+          <img class="img-fit" src="https://images.unsplash.com/photo-1526256262350-7da7584cf5eb" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- === SLIDE 5 === -->
+    <section class="slide" data-slide="5">
+      <div class="left">
+        <div class="badge">System Overview</div>
+        <div class="title gold-text">Data-Driven Design</div>
+        <div class="desc">Live readings transmitted via WiFi module to a secure cloud endpoint, visualized on an adaptive dashboard.</div>
+      </div>
+      <div class="right">
+        <div class="card">
+          <img class="img-fit" src="https://images.unsplash.com/photo-1556761175-4b46a572b786" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- === SLIDE 6 === -->
+    <section class="slide" data-slide="6">
+      <div class="left">
+        <div class="badge">Team Vision</div>
+        <div class="title gold-text">Empowering Every Drop</div>
+        <div class="desc">From awareness to action — AquaSentry aims to be the bridge between environmental insight and community-driven response.</div>
+      </div>
+      <div class="right">
+        <div class="card">
+          <img class="img-fit" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- === SLIDE 7 === -->
+    <section class="slide" data-slide="7">
+      <div class="left">
+        <div class="badge">Next Steps</div>
+        <div class="title gold-text">Towards a Cleaner Future</div>
+        <div class="desc">Pilot deployment across multiple localities, user feedback analysis, and partnership with municipal bodies for large-scale adoption.</div>
+      </div>
+      <div class="right">
+        <div class="card">
+          <img class="img-fit" src="https://images.unsplash.com/photo-1482192596544-9eb780fc7f66" alt="">
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="controls">
+    <div class="left-controls">
+      <button class="btn" id="prevBtn">◀ PREV</button>
+      <button class="btn primary" id="nextBtn">NEXT ▶</button>
+    </div>
+    <div style="color: var(--text-secondary); font-size: 15px;">
+      INFOGRAPHIC <span id="current" class="gold-text">1</span> / <span id="total">7</span>
+    </div>
+  </div>
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let index = 0;
+const currentEl = document.getElementById('current');
+const totalEl = document.getElementById('total');
+totalEl.textContent = total;
+const dotsWrap = document.getElementById('dots');
+
+slides.forEach((s,i)=>{
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0? ' active':'');
+  dotsWrap.appendChild(d);
+  d.addEventListener('click', ()=>go(i));
+});
+
+function updateUI(){
+  slides.forEach((s,i)=> s.classList.toggle('active', i===index));
+  currentEl.textContent = index+1;
+  document.querySelectorAll('.dot').forEach((d,i)=> d.classList.toggle('active', i===index));
+}
+
+function go(i){
+  index = Math.max(0, Math.min(total-1, i));
+  updateUI();
+}
+document.getElementById('nextBtn').addEventListener('click', ()=> go(index+1));
+document.getElementById('prevBtn').addEventListener('click', ()=> go(index-1));
+updateUI();
+
+/* === 7:4 Ratio Scaling System === */
+function resizeDeck() {
+  const deck = document.getElementById('deck');
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const targetRatio = 7 / 4;
+  const marginRatio = 0.03;
+  const margin = Math.min(vw, vh) * marginRatio;
+  const maxWidth = vw - margin * 2;
+  const maxHeight = vh - margin * 2;
+
+  let newWidth = maxWidth;
+  let newHeight = newWidth / targetRatio;
+
+  if (newHeight > maxHeight) {
+    newHeight = maxHeight;
+    newWidth = newHeight * targetRatio;
+  }
+
+  const scale = newWidth / 1400;
+  deck.style.transform = `scale(${scale})`;
+}
+
+window.addEventListener('resize', resizeDeck);
+window.addEventListener('load', resizeDeck);
+</script>
+</body>
+  </html>
